@@ -1,0 +1,13 @@
+com\rms\common\entity\OrgRuleEntity.class
+com\rms\common\entity\OrgTypeEntity.class
+com\rms\common\entity\PersonOrgPosEntity.class
+com\rms\common\util\Result.class
+com\rms\common\util\JsonUtils.class
+com\rms\common\entity\BasicEntity.class
+com\rms\common\entity\OrgTypeRuleEntity.class
+com\rms\common\entity\PositionEntity.class
+com\rms\common\util\ErrorType.class
+com\rms\common\util\IDUtils.class
+com\rms\common\util\ExceptionUtil.class
+com\rms\common\entity\OrgEntity.class
+com\rms\common\entity\PersonEntity.class

@@ -1,0 +1,5 @@
+com\rms\repository\PersonRepository.class
+com\rms\repository\OrgTypeRuleRepository.class
+com\rms\repository\PositionRepository.class
+com\rms\repository\OrganizationRepository.class
+com\rms\repository\OrgTypeRepository.class

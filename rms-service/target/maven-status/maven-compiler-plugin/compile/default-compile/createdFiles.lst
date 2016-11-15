@@ -1,0 +1,5 @@
+com\rms\service\impl\OrganizationServiceImpl.class
+com\rms\service\impl\PositionServiceImpl.class
+com\rms\service\impl\BasicServiceImpl.class
+com\rms\service\impl\OrgTypeServiceImpl.class
+com\rms\service\impl\PersonServiceImpl.class

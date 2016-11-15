@@ -1,0 +1,10 @@
+.errorMessage{
+  font-family: Arial;
+  border: 2px solid #bd362f;
+  border-radius: 20px;
+  padding: 30px 30px;
+  margin-bottom: 20px;
+  margin-right: 30px;
+  margin-left: 30px;
+  width: auto;
+}

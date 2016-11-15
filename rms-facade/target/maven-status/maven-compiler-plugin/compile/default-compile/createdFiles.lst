@@ -1,0 +1,5 @@
+com\rms\facade\OrganizationService.class
+com\rms\facade\PositionService.class
+com\rms\facade\BasicService.class
+com\rms\facade\PersonService.class
+com\rms\facade\OrgTypeService.class
