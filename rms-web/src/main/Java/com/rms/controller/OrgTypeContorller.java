@@ -1,5 +1,6 @@
 package com.rms.controller;
 
+import com.rms.common.entity.OrgEntity;
 import com.rms.common.entity.OrgTypeEntity;
 import com.rms.common.util.ErrorType;
 import com.rms.common.util.ExceptionUtil;
@@ -8,6 +9,8 @@ import com.rms.facade.OrgTypeService;
 import com.rms.vo.OrgTypeVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -31,8 +34,16 @@ public class OrgTypeContorller {
     private OrgTypeService orgTypeService;
 
     @RequestMapping(value = "/getAll",method = RequestMethod.GET)
-    public @ResponseBody Result getAllOrgType(){
-        return Result.ok(orgTypeService.getAll());
+    public @ResponseBody Result getAllOrgType(int page, int limit){
+        Page<OrgTypeEntity> pageReturn = null;
+        try {
+            PageRequest pageRequest = new PageRequest(page-1, limit);
+            pageReturn = orgTypeService.getAll(pageRequest);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.build(500, ExceptionUtil.getStackTrace(e), false, ErrorType.RuntimeException.toString());
+        }
+        return Result.ok(pageReturn);
     }
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)

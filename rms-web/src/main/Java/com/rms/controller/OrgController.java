@@ -36,7 +36,7 @@ public class OrgController {
     public @ResponseBody Result getAll(Integer curPage, Integer pageSize){
         Page<OrgEntity> page = null;
         try {
-            PageRequest pageRequest = new PageRequest(curPage, pageSize);
+            PageRequest pageRequest = new PageRequest(curPage-1, pageSize);
             page = organizationService.getAll(pageRequest);
         }catch (Exception e){
             e.printStackTrace();

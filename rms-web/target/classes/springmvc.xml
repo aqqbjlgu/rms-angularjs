@@ -21,7 +21,7 @@
 	</bean>
 	<!-- 资源映射 -->
 	<!--<mvc:resources location="/script/" mapping="/script/**"/>-->
-	<mvc:resources location="/view/tpl/" mapping="/view/tpl/**"/>
+	<mvc:resources location="/view/" mapping="/view/**"/>
 	
 	<!--<bean id="converterService" class="org.springframework.context.support.ConversionServiceFactoryBean">
 		<property name="converters">

@@ -84,7 +84,7 @@
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>
                     <server>Tomcat7</server>
-                    <port>8080</port>
+                    <port>8088</port>
                     <path>/</path>
                 </configuration>
             </plugin>
