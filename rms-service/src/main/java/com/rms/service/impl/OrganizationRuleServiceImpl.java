@@ -1,10 +1,12 @@
 package com.rms.service.impl;
 
 import com.rms.common.dto.OrganizationDto;
-import com.rms.common.exception.BusinessException;
-import com.rms.facade.OrganizationService;
 import com.rms.common.entity.OrgEntity;
-import com.rms.repository.OrganizationRepository;
+import com.rms.common.entity.OrgRuleEntity;
+import com.rms.common.exception.BusinessException;
+import com.rms.facade.OrganizationRuleService;
+import com.rms.facade.OrganizationService;
+import com.rms.repository.OrganizationRuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -14,7 +16,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.ignoreCase;
 
@@ -23,74 +24,17 @@ import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatc
  * Created by 国平 on 2016/10/21.
  */
 @Service
-public class OrganizationServiceImpl extends BasicServiceImpl<OrgEntity> implements OrganizationService {
+public class OrganizationRuleServiceImpl extends BasicServiceImpl<OrgRuleEntity> implements OrganizationRuleService {
     
     @Autowired
-    private OrganizationRepository organizationRepository;
-    public void deleteOrgTypRule() {
-        OrgEntity orgEntity = new OrgEntity();
-        orgEntity.setAddress("1");
-        orgEntity.setAtt1("1");
-        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("att1", ignoreCase()).withMatcher("address",ignoreCase()).withIgnorePaths("leaf");
-        Example<OrgEntity> example = Example.of(orgEntity,matcher);
-        List<OrgEntity> orgEntitys = this.getAllByExample(example);
-        System.out.print("&&&&&&&&&&&&&&&&&"+orgEntitys.get(0).getManagerType());
-        //orgTypeRuleRepository.delete(orgTypeRuleEntity);
+    private OrganizationRuleRepository organizationRuleRepository;
+    
+    public OrgRuleEntity getAllByOrgId(String orgId) {
+        OrgRuleEntity orgRuleEntity = organizationRuleRepository.getAllByOrgId(orgId);
+        return orgRuleEntity;
     }
     
-    
-    public List<OrgEntity> getAllByTypeId(List<String> typeIds) {
-        return organizationRepository.getAllByTypeIds(typeIds);
-    }
-    
-    public List<OrgEntity> getAllByParentId(String node) {
-        if("root".equals(node)){
-            node = 0+"";
-        }
-        return organizationRepository.getAllByParentId(node);
-    }
-    
-    public List<OrgEntity> getAllByParentId(List<String> parentIds) {
-        return organizationRepository.getAllByParentId(parentIds);
-    }
-    
-    public List<OrganizationDto> getAllByParentId() {
-        return getOrganizationTree(0+"");
-    }
-    
-    private List<OrganizationDto> getOrganizationTree(String parentId){
-        List<OrgEntity> orgEntities =  organizationRepository.getAllByParentId(parentId);
-        List<OrganizationDto> organizationDtos = new ArrayList<OrganizationDto>();
-        for(OrgEntity orgEntity : orgEntities){
-            OrganizationDto organizationDto = new OrganizationDto();
-            organizationDto.setId(orgEntity.getId());
-            organizationDto.setName(orgEntity.getName());
-            organizationDto.setLeaf(orgEntity.isLeaf());
-            if(!orgEntity.isLeaf()){
-                organizationDto.setChildren(getOrganizationTree(orgEntity.getId()));
-                organizationDtos.add(organizationDto);
-            }else{
-                organizationDtos.add(organizationDto);
-            }
-        }
-        return organizationDtos;
-    }
-    
-    @Transactional
-    public void delete(List<String> ids) throws Exception{
-        List<OrgEntity> organizations = this.getAllByParentId(ids);
-        if(CollectionUtils.isEmpty(organizations)){
-            organizationRepository.delete(ids);
-        }else{
-            throw new BusinessException(500,"请先删除下属组织机构");
-        }
-    }
-    
-    @Transactional
-    public OrgEntity save(OrgEntity orgEntity){
-        OrgEntity parentOrg = this.getById(orgEntity.getParentId());
-        parentOrg.setLeaf(false);
-        organizationRepository.save(parentOrg);
-        return organizationRepository.save(orgEntity);
+    public void delete(List<String> ids) throws Exception {
+        organizationRuleRepository.delete(ids);
     }
 }

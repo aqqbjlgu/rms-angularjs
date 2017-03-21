@@ -15,6 +15,10 @@ public class PersonEntity  extends BasicEntity {
      */
     private String name;
     /**
+     * 密码
+     */
+    private String password;
+    /**
      * 姓别
      */
     private int sex;
@@ -34,6 +38,15 @@ public class PersonEntity  extends BasicEntity {
      * 头像
      */
     private String image;
+    /**
+     * 状态
+     */
+    private String status;
+    
+    /**
+     * 邮箱
+     */
+    private String email;
 
     @Column(name="t_name")
     public String getName() {
@@ -87,5 +100,32 @@ public class PersonEntity  extends BasicEntity {
 
     public void setImage(String image) {
         this.image = image;
+    }
+    
+    @Column(name = "t_password")
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    @Column(name = "t_status")
+    public String getStatus() {
+        return status;
+    }
+    
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    @Column(name = "t_email")
+    public String getEmail() {
+        return email;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

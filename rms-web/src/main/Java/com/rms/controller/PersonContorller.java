@@ -1,90 +1,113 @@
 package com.rms.controller;
 
-import com.rms.common.entity.OrgTypeEntity;
+import com.rms.common.dto.PersonDto;
+import com.rms.common.dto.PersonOrgPosDto;
+import com.rms.common.entity.PersonEntity;
 import com.rms.common.util.ErrorType;
 import com.rms.common.util.ExceptionUtil;
 import com.rms.common.util.Result;
-import com.rms.facade.OrgTypeService;
-import com.rms.common.dto.OrgTypeAndRuleDto;
-import com.rms.vo.OrgTypeVo;
+import com.rms.facade.PersonService;
+import com.rms.vo.PersonVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by 国平 on 2016/10/23.
  */
 @Controller
-@RequestMapping("/orgType")
-public class OrgTypeContorller {
+@RequestMapping("/person")
+public class PersonContorller {
 
     @Autowired
-    private OrgTypeService orgTypeService;
+    private PersonService personService;
+    
+    private static final Logger log = LoggerFactory.getLogger(PersonContorller.class);
 
     @RequestMapping(value = "/getAll",method = RequestMethod.GET)
-    public @ResponseBody Result getAllOrgType(int page, int limit){
-        Page<OrgTypeEntity> pageReturn = null;
+    public @ResponseBody Result getAll(int page, int limit){
+        log.info("page================="+page);
+        Page<PersonDto> pageReturn = null;
         try {
-            PageRequest pageRequest = new PageRequest(page-1, limit);
-            pageReturn = orgTypeService.getAll(pageRequest);
+            Pageable pageRequest = new PageRequest(page-1, limit);
+            pageReturn = personService.getAllWithOidAndPid(pageRequest);
         }catch (Exception e){
-            e.printStackTrace();
+            log.error("500", e);
             return Result.build(500, ExceptionUtil.getStackTrace(e), false, ErrorType.RuntimeException.toString());
         }
         return Result.ok(pageReturn);
     }
     
-    @RequestMapping(value = "/getOrgTypeByPid/{pid}",method = RequestMethod.GET)
-    public @ResponseBody Result getOrgTypeByPid(@PathVariable String pid, int page, int limit){
-        List<OrgTypeAndRuleDto> orgTypeEntities;
+    @RequestMapping(value = "/getByEmail",method = RequestMethod.GET)
+    public @ResponseBody Result getByEmail(String email){
+        PersonEntity personEntity = null;
         try {
-            orgTypeEntities = orgTypeService.getOrgTypeUsePid(pid);
+            personEntity = personService.getByEmail(email);
         }catch (Exception e){
-            e.printStackTrace();
+            log.error("500", e);
             return Result.build(500, ExceptionUtil.getStackTrace(e), false, ErrorType.RuntimeException.toString());
         }
-        return Result.ok(orgTypeEntities);
+        return Result.ok(personEntity);
     }
     
-    @RequestMapping(value = "/getAllWithoutPage",method = RequestMethod.GET)
-    public @ResponseBody Result getAllWithoutPage(){
-        List<OrgTypeEntity> result;
+    @RequestMapping(value = "/getByIdCard/{idCard}",method = RequestMethod.GET)
+    public @ResponseBody Result getByIdCard(@PathVariable String idCard){
+        PersonEntity personEntity = null;
         try {
-            result = orgTypeService.getAll();
+            personEntity = personService.getByIdCard(idCard);
         }catch (Exception e){
-            e.printStackTrace();
+            log.error("500", e);
             return Result.build(500, ExceptionUtil.getStackTrace(e), false, ErrorType.RuntimeException.toString());
         }
-        return Result.ok(result);
+        return Result.ok(personEntity);
     }
     
-    @RequestMapping(value = "/getOthers/{id}",method = RequestMethod.GET)
-    public @ResponseBody Result getOthers(@PathVariable String id){
-        List<OrgTypeEntity> result;
+    @RequestMapping(value = "/getByPhone/{phone}",method = RequestMethod.GET)
+    public @ResponseBody Result getByPhone(@PathVariable String phone){
+        PersonEntity personEntity = null;
         try {
-            result = orgTypeService.getOthers(id);
+            personEntity = personService.getByPhone(phone);
         }catch (Exception e){
-            e.printStackTrace();
+            log.error("500", e);
             return Result.build(500, ExceptionUtil.getStackTrace(e), false, ErrorType.RuntimeException.toString());
         }
-        return Result.ok(result);
+        return Result.ok(personEntity);
+    }
+    
+    @RequestMapping(value = "/getByNickName/{nickName}",method = RequestMethod.GET)
+    public @ResponseBody Result getByNickName(@PathVariable String nickName){
+        PersonEntity personEntity = null;
+        try {
+            personEntity = personService.getByNickName(nickName);
+        }catch (Exception e){
+            log.error("500", e);
+            return Result.build(500, ExceptionUtil.getStackTrace(e), false, ErrorType.RuntimeException.toString());
+        }
+        return Result.ok(personEntity);
     }
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public @ResponseBody Result add(@Valid OrgTypeVo orgTypeVo, BindingResult result, HttpSession session){
-        OrgTypeEntity orgTypeEntity = new OrgTypeEntity();
+    public @ResponseBody Result add(@Valid PersonVo personVo, BindingResult result, HttpSession session){
+        PersonDto personDto = new PersonDto();
         try {
             if (result.getErrorCount()>0){
                 String errorMessage = "";
@@ -93,42 +116,53 @@ public class OrgTypeContorller {
                 }
                 return Result.build(500, errorMessage, false, ErrorType.NormException.toString());
             }
-            if(StringUtils.isEmpty(orgTypeVo.getId())){
-                orgTypeVo.setInsertDate(new Date());
-                orgTypeVo.setInsertUserId(session.getAttribute("userId")==null?"guest":session.getAttribute("userId").toString());
+            PersonEntity personEntity = personService.getById(personVo.getId());
+            if(StringUtils.isEmpty(personVo.getId())){
+                personVo.setInsertDate(new Date());
+                personVo.setInsertUserId(session.getAttribute("userId")==null?"guest":session.getAttribute("userId").toString());
             }else{
-                orgTypeEntity = orgTypeService.getById(orgTypeVo.getId());
-                orgTypeVo.setInsertDate(orgTypeEntity.getInsertDate());
-                orgTypeVo.setInsertUserId(orgTypeEntity.getInsertUserId());
+                personVo.setInsertDate(personEntity.getInsertDate());
+                personVo.setInsertUserId(personEntity.getInsertUserId());
             }
-            orgTypeVo.setUpDateDate(new Date());
-            orgTypeVo.setUpDateUserId(session.getAttribute("userId")==null?"guest":session.getAttribute("userId").toString());
-            BeanUtils.copyProperties(orgTypeVo,orgTypeEntity);
-            orgTypeEntity = orgTypeService.save(orgTypeEntity);
+            personVo.setUpDateDate(new Date());
+            personVo.setUpDateUserId(session.getAttribute("userId")==null?"guest":session.getAttribute("userId").toString());
+            BeanUtils.copyProperties(personVo,personDto);
+            List<PersonOrgPosDto> personOrgPosDtos = personVo.getPersonOrgPosDtos();
+            Iterator<PersonOrgPosDto> iter = personOrgPosDtos.iterator();
+            while(iter.hasNext()){
+                PersonOrgPosDto personOrgPosDto = iter.next();
+                if(StringUtils.isEmpty(personOrgPosDto.getOrgId())){
+                    iter.remove();
+                }
+            }
+            personDto.setPersonOrgPosDtos(personOrgPosDtos);
+            personService.save(personDto);
         }catch (Exception e){
+            log.error("500", e);
             return Result.build(500, ExceptionUtil.getStackTrace(e), false, ErrorType.RuntimeException.toString());
         }
-        return Result.ok(orgTypeEntity);
+        return Result.ok(personDto);
     }
 
     @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
     public void delete(@PathVariable String id){
-        OrgTypeEntity orgTypeEntity = new OrgTypeEntity();
-        orgTypeEntity.setId(id);
-        orgTypeService.delete(orgTypeEntity);
+        PersonEntity personEntity = new PersonEntity();
+        personEntity.setId(id);
+        personService.delete(personEntity);
     }
 
     @RequestMapping(value = "update",method = RequestMethod.PUT)
-    public Result update(OrgTypeEntity orgTypeEntity){
-        return Result.ok(orgTypeService.save(orgTypeEntity));
+    public Result update(PersonEntity personEntity){
+        return Result.ok(personService.save(personEntity));
     }
     
     @RequestMapping(value = "deleteAll",method = RequestMethod.DELETE)
     public @ResponseBody Result deleteAll(String[] ids){
         try {
             List idsList = CollectionUtils.arrayToList(ids);
-            orgTypeService.delete(idsList);
+            personService.delete(idsList);
         }catch (Exception e){
+            log.error("500", e);
             if(e instanceof RuntimeException){
                 return Result.build(500, ExceptionUtil.getStackTrace(e), false, ErrorType.RuntimeException.toString());
             }

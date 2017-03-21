@@ -1,5 +1,8 @@
 com\rms\service\impl\OrganizationServiceImpl.class
-com\rms\service\impl\PositionServiceImpl.class
 com\rms\service\impl\BasicServiceImpl.class
-com\rms\service\impl\OrgTypeServiceImpl.class
+com\rms\service\impl\OrgTypeRuleServiceImpl.class
 com\rms\service\impl\PersonServiceImpl.class
+com\rms\service\impl\OrganizationRuleServiceImpl.class
+com\rms\service\impl\PositionServiceImpl.class
+com\rms\service\impl\PersonOrgPosServiceImpl.class
+com\rms\service\impl\OrgTypeServiceImpl.class

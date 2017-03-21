@@ -1,18 +1,15 @@
 package com.rms.controller;
 
-import com.rms.common.dto.OrganizationDto;
-import com.rms.common.entity.OrgEntity;
-import com.rms.common.entity.OrgTypeEntity;
+import com.rms.common.entity.PositionEntity;
 import com.rms.common.util.ErrorType;
 import com.rms.common.util.ExceptionUtil;
 import com.rms.common.util.Result;
-import com.rms.facade.OrganizationService;
-import com.rms.vo.OrgVo;
+import com.rms.facade.PositionService;
+import com.rms.vo.PositionVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -23,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,16 +27,18 @@ import java.util.List;
  * Created by 国平 on 2016/10/23.
  */
 @Controller
-@RequestMapping("/org")
-public class OrgController {
+@RequestMapping("/position")
+public class PositionController {
     @Autowired
-    private OrganizationService organizationService;
+    private PositionService positionService;
+    private static final Logger log = LoggerFactory.getLogger(PositionController.class);
     @RequestMapping(value = "/getAll",method = RequestMethod.GET)
-    public @ResponseBody Result getAll(String node){
-        List<OrgEntity> result;
+    public @ResponseBody Result getAll(){
+        List<PositionEntity> result;
         try {
-            result = organizationService.getAllByParentId(node);
+            result = positionService.getAll();
         }catch (Exception e){
+            log.error("500", e);
             if(e instanceof RuntimeException){
                 return Result.build(500, ExceptionUtil.getStackTrace(e), false, ErrorType.RuntimeException.toString());
             }
@@ -49,18 +47,13 @@ public class OrgController {
         return Result.ok(result);
     }
     
-    @RequestMapping(value = "/getAllLikeTree",method = RequestMethod.GET)
-    public @ResponseBody List<OrganizationDto> getAllLikeTree(){
-        List<OrganizationDto> result = organizationService.getAllByParentId() ;
-        return result;
-    }
-    
     @RequestMapping(value = "deleteAll",method = RequestMethod.DELETE)
     public @ResponseBody Result deleteAll(String[] ids){
         try {
             List idsList = CollectionUtils.arrayToList(ids);
-            organizationService.delete(idsList);
+            positionService.delete(idsList);
         }catch (Exception e){
+            log.error("500", e);
             if(e instanceof RuntimeException){
                 return Result.build(500, ExceptionUtil.getStackTrace(e), false, ErrorType.RuntimeException.toString());
             }
@@ -70,8 +63,8 @@ public class OrgController {
     }
     
     @RequestMapping(value = "add",method = RequestMethod.POST)
-    public @ResponseBody Result add(OrgVo orgVo, BindingResult result, HttpSession session){
-        OrgEntity orgEntity = new OrgEntity();
+    public @ResponseBody Result add(PositionVo positionVo, BindingResult result, HttpSession session){
+        PositionEntity positionEntity = new PositionEntity();
         try {
             if (result.getErrorCount()>0){
                 String errorMessage = "";
@@ -80,24 +73,25 @@ public class OrgController {
                 }
                 return Result.build(500, errorMessage, false, ErrorType.NormException.toString());
             }
-            if(StringUtils.isEmpty(orgVo.getId())){
-                orgVo.setInsertDate(new Date());
-                orgVo.setInsertUserId(session.getAttribute("userId")==null?"guest":session.getAttribute("userId").toString());
-                orgVo.setLeaf(true);
+            if(StringUtils.isEmpty(positionVo.getId())){
+                positionVo.setInsertDate(new Date());
+                positionVo.setInsertUserId(session.getAttribute("userId")==null?"guest":session.getAttribute("userId").toString());
+            }else {
+                positionEntity = positionService.getById(positionVo.getId());
+                positionVo.setInsertDate(positionEntity.getInsertDate());
+                positionVo.setInsertUserId(positionEntity.getInsertUserId());
             }
-            orgVo.setUpDateDate(new Date());
-            orgVo.setUpDateUserId(session.getAttribute("userId")==null?"guest":session.getAttribute("userId").toString());
-            if(StringUtils.isEmpty(orgVo.getParentId()) || "root".equals(orgVo.getParentId())){
-                orgVo.setParentId("0");
-            }
-            BeanUtils.copyProperties(orgVo,orgEntity);
-            orgEntity = organizationService.save(orgEntity);
+            positionVo.setUpDateDate(new Date());
+            positionVo.setUpDateUserId(session.getAttribute("userId")==null?"guest":session.getAttribute("userId").toString());
+            BeanUtils.copyProperties(positionVo,positionEntity);
+            positionEntity = positionService.save(positionEntity);
         }catch (Exception e){
+            log.error("500", e);
             if(e instanceof RuntimeException){
                 return Result.build(500, ExceptionUtil.getStackTrace(e), false, ErrorType.RuntimeException.toString());
             }
             return Result.build(500, ExceptionUtil.getStackTrace(e), false, ErrorType.NormException.toString());
         }
-        return Result.ok(orgEntity);
+        return Result.ok(positionEntity);
     }
 }

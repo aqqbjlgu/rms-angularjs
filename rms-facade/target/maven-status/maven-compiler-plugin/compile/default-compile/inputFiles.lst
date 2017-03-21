@@ -1,5 +1,8 @@
-G:\rms\rms-facade\src\main\java\com\rms\facade\OrganizationService.java
-G:\rms\rms-facade\src\main\java\com\rms\facade\OrgTypeService.java
-G:\rms\rms-facade\src\main\java\com\rms\facade\PersonService.java
-G:\rms\rms-facade\src\main\java\com\rms\facade\PositionService.java
-G:\rms\rms-facade\src\main\java\com\rms\facade\BasicService.java
+F:\rms-extjs\rms-facade\src\main\java\com\rms\facade\OrgTypeRuleService.java
+F:\rms-extjs\rms-facade\src\main\java\com\rms\facade\BasicService.java
+F:\rms-extjs\rms-facade\src\main\java\com\rms\facade\OrganizationRuleService.java
+F:\rms-extjs\rms-facade\src\main\java\com\rms\facade\OrgTypeService.java
+F:\rms-extjs\rms-facade\src\main\java\com\rms\facade\OrganizationService.java
+F:\rms-extjs\rms-facade\src\main\java\com\rms\facade\PersonService.java
+F:\rms-extjs\rms-facade\src\main\java\com\rms\facade\PersonOrgPosService.java
+F:\rms-extjs\rms-facade\src\main\java\com\rms\facade\PositionService.java

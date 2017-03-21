@@ -1,4 +1,4 @@
-package com.eshop.controller.converter;
+package com.rms.controller.converter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -1,6 +1,9 @@
 package com.rms.facade;
 
+import com.rms.common.dto.OrgTypeAndRuleDto;
 import com.rms.common.entity.OrgTypeEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -8,13 +11,11 @@ import java.util.List;
  * Created by 国平 on 2016/10/21.
  */
 public interface OrgTypeService extends BasicService<OrgTypeEntity> {
+   
+   List<OrgTypeAndRuleDto> getOrgTypeUsePid(String pid);
 
-    public void addOrgTypRule(String pid, String cid, Integer num);
-
-    public void deleteOrgTypRule(String pid, String cid);
-
-    public void updateOrgTypRule(String pid, String cid, Integer num);
-
-    public void delete(List<String> ids);
+   void delete(List<String> ids) throws Exception;
+   
+   List<OrgTypeEntity> getOthers(String id);
 
 }

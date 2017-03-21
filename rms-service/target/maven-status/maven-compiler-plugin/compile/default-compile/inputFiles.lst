@@ -1,5 +1,8 @@
-G:\rms\rms-service\src\main\java\com\rms\service\impl\PositionServiceImpl.java
-G:\rms\rms-service\src\main\java\com\rms\service\impl\OrganizationServiceImpl.java
-G:\rms\rms-service\src\main\java\com\rms\service\impl\OrgTypeServiceImpl.java
-G:\rms\rms-service\src\main\java\com\rms\service\impl\PersonServiceImpl.java
-G:\rms\rms-service\src\main\java\com\rms\service\impl\BasicServiceImpl.java
+F:\rms-extjs\rms-service\src\main\java\com\rms\service\impl\OrganizationServiceImpl.java
+F:\rms-extjs\rms-service\src\main\java\com\rms\service\impl\OrganizationRuleServiceImpl.java
+F:\rms-extjs\rms-service\src\main\java\com\rms\service\impl\PersonOrgPosServiceImpl.java
+F:\rms-extjs\rms-service\src\main\java\com\rms\service\impl\PersonServiceImpl.java
+F:\rms-extjs\rms-service\src\main\java\com\rms\service\impl\OrgTypeRuleServiceImpl.java
+F:\rms-extjs\rms-service\src\main\java\com\rms\service\impl\BasicServiceImpl.java
+F:\rms-extjs\rms-service\src\main\java\com\rms\service\impl\PositionServiceImpl.java
+F:\rms-extjs\rms-service\src\main\java\com\rms\service\impl\OrgTypeServiceImpl.java

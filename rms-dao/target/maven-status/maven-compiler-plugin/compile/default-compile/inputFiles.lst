@@ -1,5 +1,7 @@
-G:\rms\rms-dao\src\main\java\com\rms\repository\OrgTypeRuleRepository.java
-G:\rms\rms-dao\src\main\java\com\rms\repository\PersonRepository.java
-G:\rms\rms-dao\src\main\java\com\rms\repository\PositionRepository.java
-G:\rms\rms-dao\src\main\java\com\rms\repository\OrgTypeRepository.java
-G:\rms\rms-dao\src\main\java\com\rms\repository\OrganizationRepository.java
+F:\rms-extjs\rms-dao\src\main\java\com\rms\repository\OrganizationRepository.java
+F:\rms-extjs\rms-dao\src\main\java\com\rms\repository\OrgTypeRepository.java
+F:\rms-extjs\rms-dao\src\main\java\com\rms\repository\OrgTypeRuleRepository.java
+F:\rms-extjs\rms-dao\src\main\java\com\rms\repository\PersonOrgPosRepository.java
+F:\rms-extjs\rms-dao\src\main\java\com\rms\repository\PositionRepository.java
+F:\rms-extjs\rms-dao\src\main\java\com\rms\repository\PersonRepository.java
+F:\rms-extjs\rms-dao\src\main\java\com\rms\repository\OrganizationRuleRepository.java

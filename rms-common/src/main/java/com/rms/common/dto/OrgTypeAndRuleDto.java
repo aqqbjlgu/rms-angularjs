@@ -1,4 +1,4 @@
-package com.rms.repository.dto;
+package com.rms.common.dto;
 
 
 /**
@@ -46,6 +46,54 @@ public class OrgTypeAndRuleDto {
         this.cid = cid;
         this.name = name;
         this.sn = sn;
+        this.num = num;
+    }
+    
+    public String getRid() {
+        return rid;
+    }
+    
+    public void setRid(String rid) {
+        this.rid = rid;
+    }
+    
+    public String getPid() {
+        return pid;
+    }
+    
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+    
+    public String getCid() {
+        return cid;
+    }
+    
+    public void setCid(String cid) {
+        this.cid = cid;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getSn() {
+        return sn;
+    }
+    
+    public void setSn(String sn) {
+        this.sn = sn;
+    }
+    
+    public Integer getNum() {
+        return num;
+    }
+    
+    public void setNum(Integer num) {
         this.num = num;
     }
 }

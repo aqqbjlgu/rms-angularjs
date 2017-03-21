@@ -1,4 +1,4 @@
-package com.rms.repository.dto;
+package com.rms.common.dto;
 
 
 /**
